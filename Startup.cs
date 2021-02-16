@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using ElectronNET.API;
+using Microsoft.EntityFrameworkCore;
+using CourseProjectBlazor.Models;
 
 namespace CourseProjectBlazor
 {
@@ -28,6 +30,12 @@ namespace CourseProjectBlazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlite("DataSource=Database.db");
+            });
+            services.AddScoped<DatabaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

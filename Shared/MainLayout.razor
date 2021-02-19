@@ -1,9 +1,20 @@
 @inherits LayoutComponentBase
-
+@using Services
+@inject DatabaseService DbService
 <div class="page">
     <div class="main">
         <div class="content px-4">
             @Body
         </div>
+        <p>@Ram</p>
     </div>
 </div>
+
+@code {
+   public string Ram {get; private set;}
+   protected override async Task OnInitializedAsync()
+    {
+        var rams = await DbService.GetFirstRamById(1);
+        Ram = rams?.ToString();
+    }
+}

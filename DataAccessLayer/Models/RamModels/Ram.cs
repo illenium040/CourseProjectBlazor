@@ -1,4 +1,4 @@
-namespace CourseProjectBlazor.Models.Ram
+namespace CourseProjectBlazor.DataAccessLayer.Models.RamModels
 {
     public class Ram
     {

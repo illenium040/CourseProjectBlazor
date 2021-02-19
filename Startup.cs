@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +7,8 @@ using Microsoft.Extensions.Hosting;
 
 using ElectronNET.API;
 using Microsoft.EntityFrameworkCore;
-using CourseProjectBlazor.Models;
+using CourseProjectBlazor.DataAccessLayer.Contexts;
+using CourseProjectBlazor.Services;
 
 namespace CourseProjectBlazor
 {
@@ -31,9 +28,9 @@ namespace CourseProjectBlazor
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddDbContext<DatabaseContext>(options =>
+            services.AddDbContext<RamContext>(options =>
             {
-                options.UseSqlite("DataSource=Database.db");
+                options.UseSqlite("DataSource=Database\\Database.db");
             });
             services.AddScoped<DatabaseService>();
         }

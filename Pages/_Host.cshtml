@@ -17,7 +17,12 @@
     <link href="CourseProjectBlazor.styles.css" rel="stylesheet" />
 </head>
 <body>
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    @* 
+        render-mode:
+        ServerPrerendered - service called twice
+        Server - service called only once
+    *@
+    <component type="typeof(App)" render-mode="Server" />
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">

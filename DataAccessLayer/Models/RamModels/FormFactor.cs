@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace CourseProjectBlazor.Models.Ram
+namespace CourseProjectBlazor.DataAccessLayer.Models.RamModels
 {
-    public class Manufacturer
+    public class FormFactor
     {
         public int Id { get; set; }
         public string Name { get; set; }

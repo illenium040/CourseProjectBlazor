@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CourseProjectBlazor.Models.Ram
+namespace CourseProjectBlazor.DataAccessLayer.Models.RamModels
 {
     public class Type
     {

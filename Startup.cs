@@ -10,6 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using CourseProjectBlazor.DataAccessLayer.Contexts;
 using CourseProjectBlazor.Services;
 
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using System.IO;
+
 namespace CourseProjectBlazor
 {
     public class Startup
@@ -28,9 +33,16 @@ namespace CourseProjectBlazor
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            services.AddBlazorise( options =>
+                {
+                    options.ChangeTextOnKeyPress = true;
+                })
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
+
             services.AddDbContext<RamContext>(options =>
             {
-                options.UseSqlite("DataSource=Database\\Database.db");
+                options.UseSqlite($"DataSource={Directory.GetCurrentDirectory()}\\Database\\DatabaseTest.db");
             });
             services.AddScoped<DatabaseService>();
         }
@@ -56,6 +68,10 @@ namespace CourseProjectBlazor
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            app.ApplicationServices
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }

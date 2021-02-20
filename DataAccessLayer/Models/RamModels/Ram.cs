@@ -1,13 +1,12 @@
 namespace CourseProjectBlazor.DataAccessLayer.Models.RamModels
 {
-    public class Ram
+    public class Ram : Product
     {
-        public int Id { get; set; }
-        
+        public override int Id { get; set; }
         public int ManufacturerId { get; set; }
         public Manufacturer Manufacturer { get; set; }
         
-        public string Model { get; set; }
+        public override string Model { get; set; }
 
         public int FormFactorId { get; set; }
         public FormFactor FormFactor { get; set; }
@@ -27,6 +26,7 @@ namespace CourseProjectBlazor.DataAccessLayer.Models.RamModels
         public int CoolingId { get; set; }
         public Cooling Cooling { get; set; }
 
-        public int Price { get; set; }
+        public override int Price { get; set; }
+        public string ManufacturerCode {get;set;}
     }
 }

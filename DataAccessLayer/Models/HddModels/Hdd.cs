@@ -21,6 +21,6 @@ namespace CourseProjectBlazor.DataAccessLayer.Models.HddModels
         public int Speed { get; set; }
         public override int Price { get; set; }
 
-        public bool IsOem { get; set; }
+        public bool? IsOem { get; set; }
     }
 }

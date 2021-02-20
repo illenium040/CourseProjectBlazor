@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CourseProjectBlazor.DataAccessLayer.Contexts;
+using CourseProjectBlazor.DataAccessLayer.HddRepository;
+using CourseProjectBlazor.DataAccessLayer.Models.HddModels;
 using CourseProjectBlazor.DataAccessLayer.Models.RamModels;
 using CourseProjectBlazor.DataAccessLayer.RamRepository;
 
@@ -11,10 +13,13 @@ namespace CourseProjectBlazor.Services
     public class DatabaseService
     {
         private RamRepository _ramRepository;
-        public DatabaseService(RamContext context)
+        private HddRepository _hddRepository;
+        public DatabaseService(
+            RamContext ramContext,
+            HddContext hddContext)
         {
-            _ramRepository = new RamRepository(context);
-            Debug.Print("Repository initialized");
+            _ramRepository = new RamRepository(ramContext);
+            _hddRepository = new HddRepository(hddContext);
         }
 
         public async Task<IEnumerable<Ram>> GetAllRam()
@@ -22,9 +27,9 @@ namespace CourseProjectBlazor.Services
            return await Task.FromResult(_ramRepository.GetAll().ToList());
         }
 
-        public async Task<Ram> GetRam(int id) 
+        public async Task<IEnumerable<Hdd>> GetAllHdd() 
         {
-            return await Task.FromResult(_ramRepository.Get(id));
+            return await Task.FromResult(_hddRepository.GetAll().ToList());
         }
     }
 }

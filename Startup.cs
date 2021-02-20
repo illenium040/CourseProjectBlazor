@@ -14,6 +14,7 @@ using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using System.IO;
+using System;
 
 namespace CourseProjectBlazor
 {
@@ -40,10 +41,8 @@ namespace CourseProjectBlazor
                 .AddBootstrapProviders()
                 .AddFontAwesomeIcons();
 
-            services.AddDbContext<RamContext>(options =>
-            {
-                options.UseSqlite($"DataSource={Directory.GetCurrentDirectory()}\\Database\\DatabaseTest.db");
-            });
+            AddDbContexts(services);
+
             services.AddScoped<DatabaseService>();
         }
 
@@ -74,6 +73,16 @@ namespace CourseProjectBlazor
                 .UseFontAwesomeIcons();
 
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+        }
+
+        private void AddDbContexts(IServiceCollection services) 
+        {
+            Action<DbContextOptionsBuilder> action = (options) => 
+            {
+                options.UseSqlite("DataSource=Database/DatabaseTest.db");
+            };
+            services.AddDbContext<RamContext>(action);
+            services.AddDbContext<HddContext>(action);
         }
     }
 }

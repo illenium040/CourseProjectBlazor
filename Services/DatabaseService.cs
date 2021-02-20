@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using CourseProjectBlazor.DataAccessLayer.Contexts;
 using CourseProjectBlazor.DataAccessLayer.Models.RamModels;
@@ -15,9 +17,14 @@ namespace CourseProjectBlazor.Services
             Debug.Print("Repository initialized");
         }
 
-        public async Task<Ram> GetFirstRamById(int id)
+        public async Task<IEnumerable<Ram>> GetAllRam()
         {
-            return await Task.Run(() => _ramRepository.Get(id));
+           return await Task.FromResult(_ramRepository.GetAll().ToList());
+        }
+
+        public async Task<Ram> GetRam(int id) 
+        {
+            return await Task.FromResult(_ramRepository.Get(id));
         }
     }
 }

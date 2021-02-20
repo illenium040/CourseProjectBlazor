@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using CourseProjectBlazor.DataAccessLayer.Contexts;
 using CourseProjectBlazor.DataAccessLayer.Models.RamModels;
@@ -16,6 +17,16 @@ namespace CourseProjectBlazor.DataAccessLayer.RamRepository
         public override Ram Get(int id)
         {
             return RamContext.Rams.FirstOrDefault(x => x.Id == id);
+        }
+
+        public override IEnumerable<Ram> GetAll()
+        {
+            return RamContext.Rams
+                .Include(x => x.Manufacturer)
+                .Include(x => x.Cooling)
+                .Include(x => x.FormFactor)
+                .AsNoTracking()
+                .AsEnumerable();
         }
     }
 }

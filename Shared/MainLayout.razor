@@ -1,20 +1,73 @@
 @inherits LayoutComponentBase
+@using DataAccessLayer.Models
+@using DataAccessLayer.Models.RamModels
 @using Services
+
 @inject DatabaseService DbService
 <div class="page">
     <div class="main">
-        <div class="content px-4">
+        <div class="content px-4 container">
             @Body
+            <Select TValue="string" SelectedValue="@_selectedValue" SelectedValueChanged="@OnSelectedValueChanged">
+                @foreach (var category in _categoryToData)
+                {
+                    <SelectItem Value="@category.Key">@category.Key</SelectItem>
+                }
+            </Select>
+            @if (Products is null)
+            {
+                <p>Loading...</p>
+            }
+            else {
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell>№</TableHeaderCell>
+                            <TableHeaderCell>Наименование</TableHeaderCell>
+                            <TableHeaderCell>Цена</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    @foreach (var ram in Products)
+                    {
+                        <TableRow>
+                            <TableRowCell>@ram.Id</TableRowCell>
+                            <TableRowCell>@ram.Model</TableRowCell>
+                            <TableRowCell>@ram.Price</TableRowCell>
+                        </TableRow>
+                    }
+                </Table>
+            }
         </div>
-        <p>@Ram</p>
+        
     </div>
 </div>
 
 @code {
-   public string Ram {get; private set;}
-   protected override async Task OnInitializedAsync()
+
+    private Dictionary<string, Func<Task<IEnumerable<Product>>>> _categoryToData;
+    public IEnumerable<Product> Products;
+    protected override async Task OnInitializedAsync()
     {
-        var rams = await DbService.GetFirstRamById(1);
-        Ram = rams?.ToString();
+        _categoryToData = new Dictionary<string, Func<Task<IEnumerable<Product>>>>();
+        _categoryToData.Add("Оперативная память", async () => await DbService.GetAllRam());
+        _categoryToData.Add("Оперативная память 1 рандомная штука", GetRandomRam);
+        _selectedValue = _categoryToData.First().Key;
+        await InitProducts(_selectedValue);
+    }
+
+
+    //типо костыль для теста
+    private async Task<IEnumerable<Product>> GetRandomRam()
+    {
+        return new List<Product>() { await DbService.GetRam(new Random().Next(1, 10)) };
+    }
+
+    private string _selectedValue;
+    private async Task OnSelectedValueChanged(string value) {
+        await InitProducts(value);
+    }
+
+    private async Task InitProducts(string value) {
+        Products = await _categoryToData[value]();
     }
 }
